@@ -10,6 +10,12 @@ spark = SparkSession.builder.master("local[1]")\
     .getOrCreate()
 
 url = "C:/Users/stanl/Downloads/interactions_train.csv"
-df = spark.read.format("csv").load(url)
+df = spark.read.option("header", True).format("csv").load(url)
 
-print(df.head(5))
+train_data = (df
+    .select(
+        'u', # unique user id
+        'i', # unique recipe id
+        'rating', # rating
+    )
+).cache()
